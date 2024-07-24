@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boleto Bancário</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .boleto-container {
+            border: 1px solid #000;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        .header, .footer {
+            text-align: center;
+        }
+        .header img {
+            max-width: 200px;
+        }
+        .details, .instructions {
+            margin: 20px 0;
+        }
+        .details table, .instructions table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .details th, .instructions th {
+            text-align: left;
+            background-color: #f0f0f0;
+        }
+        .details td, .instructions td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        .line-digitavel {
+            font-weight: bold;
+            font-size: 16px;
+            margin: 20px 0;
+        }
+        .instructions {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="boleto-container">
+        <div class="header">
+            <img src="img/logoitau.jpg" alt="Logo do Banco">
+            <h1>Boleto Bancário</h1>
+        </div>
+        <div class="details">
+            <table>
+                <tr>
+                    <th>Beneficiário:</th>
+                    <td>Microhouse Informática S/C Ltda</td>
+                </tr>
+                <tr>
+                    <th>Data de Vencimento:</th>
+                    <td>23/07/2024</td>
+                </tr>
+                <tr>
+                    <th>Valor:</th>
+                    <td>R$ 260,00</td>
+                </tr>
+                <tr>
+                    <th>Agência:</th>
+                    <td>0049</td>
+                </tr>
+                <tr>
+                    <th>Conta:</th>
+                    <td>10201-5</td>
+                </tr>
+                <tr>
+                    <th>Data do Documento:</th>
+                    <td>23/07/2024</td>
+                </tr>
+                <tr>
+                    <th>Número do Documento:</th>
+                    <td>DF 00113</td>
+                </tr>
+            </table>
+        </div>
+        <div class="line-digitavel">
+            Linha Digitável: 34191.79001 01043.510047 91020.150008 5 97860026000
+        </div>
+        <div class="instructions">
+            <h2>Instruções:</h2>
+            <table>
+                <tr>
+                    <td>Taxa de visita de suporte</td>
+                </tr>
+                <tr>
+                    <td>Após o vencimento R$ 0,80 ao dia</td>
+                </tr>
+            </table>
+        </div>
+        <div class="footer">
+            <p>Não rasure, risque, fure ou dobre a região onde se encontra o código de barras.</p>
+            <p>Caso não apareça o código de barras no final, clique em F5 para atualizar esta tela.</p>
+            <p>Caso tenha problemas ao imprimir, copie a sequência numérica abaixo e pague no caixa eletrônico ou no internet banking.</p>
+        </div>
+    </div>
+</body>
+</html>

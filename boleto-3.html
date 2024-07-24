@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boleto</title>
+    <style>
+        .ti {
+            font: 9px Arial, Helvetica, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr>
+            <td class="ti" width="455">
+                {{.Identificacao}}<br>
+                {{if .CPFCNPJ}}{{.CPFCNPJ}}<br>{{end}}
+                {{.Endereco}}<br>
+                {{.CidadeUF}}<br>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
