@@ -1,89 +1,107 @@
-// package main
+package main
 
-// import (
-// 	"fmt"
-// 	"log"
-	
+import (
+	"bytes"
+	"encoding/base64"
+	"html/template"
+	"image"
+	"image/png"
+	"log"
+	"os"
 
-// 	"github.com/jung-kurt/gofpdf"
-// )
+	"github.com/boombuler/barcode"
+	"github.com/boombuler/barcode/twooffive"
+)
 
-// func main() {
-// 	// Dados do boleto
-// 	digitableLine := "34191.79001 01043.510047 91020.150008 5 97860026000"
-// 	beneficiary := "Microhouse Informática S/C Ltda"
-// 	dueDate := "23/07/2024"
-// 	value := "R$ 260,00"
-// 	agency := "0049"
-// 	account := "10201-5"
-// 	documentDate := "23/07/2024"
-// 	documentNumber := "DF 00113"
-// 	instructions := "Taxa de visita de suporte\nApós o vencimento R$ 0,80 ao dia"
+type BoletoData struct {
+	Identificacao    string
+	CPFCNPJ          string
+	Endereco         string
+	CidadeUF         string
+	DigitableLine    string
+	Value            string
+	CodigoBancoComDv string
+	Agencia          string
+	CodigoBarras     string
+}
 
-// 	// Criar novo PDF
-// 	pdf := gofpdf.New("P", "mm", "A4", "")
-// 	pdf.AddPage()
+func barcodeToImage(bc barcode.Barcode, width, height int) (image.Image, error) {
+	if width < 440 {
+		width = 440
+	}
+	barcodeImg, err := barcode.Scale(bc, width, height)
+	if err != nil {
+		return nil, err
+	}
+	return barcodeImg, nil
+}
 
-// 	// Adicionar título
-// 	pdf.SetFont("Arial", "B", 16)
-// 	pdf.CellFormat(190, 10, "Boleto Bancário", "0", 1, "C", false, 0, "")
+func imageToBase64(img image.Image) (string, error) {
+	var buf bytes.Buffer
+	err := png.Encode(&buf, img)
+	if err != nil {
+		return "", err
+	}
+	return base64.StdEncoding.EncodeToString(buf.Bytes()), nil
+}
 
-// 	// Adicionar linha digitável
-// 	pdf.SetFont("Arial", "B", 12)
-// 	pdf.CellFormat(190, 10, "Linha Digitável", "0", 1, "L", false, 0, "")
-// 	pdf.SetFont("Arial", "", 12)
-// 	pdf.CellFormat(190, 10, digitableLine, "0", 1, "L", false, 0, "")
+func main() {
+	tmpl, err := template.ParseFiles("boleto.html")
+	if err != nil {
+		log.Fatal("Erro ao ler o template HTML:", err)
+	}
 
-// 	// Adicionar informações do beneficiário
-// 	pdf.Ln(10)
-// 	pdf.SetFont("Arial", "B", 12)
-// 	pdf.CellFormat(190, 10, "Beneficiário", "0", 1, "L", false, 0, "")
-// 	pdf.SetFont("Arial", "", 12)
-// 	pdf.CellFormat(190, 10, beneficiary, "0", 1, "L", false, 0, "")
+	barcodeContent := "34196977800000000011094546464620563383058000"
+	barcode, err := twooffive.Encode(barcodeContent, true)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-// 	// Adicionar data de vencimento
-// 	pdf.Ln(10)
-// 	pdf.SetFont("Arial", "B", 12)
-// 	pdf.CellFormat(190, 10, "Data de Vencimento", "0", 1, "L", false, 0, "")
-// 	pdf.SetFont("Arial", "", 12)
-// 	pdf.CellFormat(190, 10, dueDate, "0", 1, "L", false, 0, "")
+	newWidth := 440
+	newHeight := 13
+	img, err := barcodeToImage(barcode, newWidth, newHeight)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-// 	// Adicionar valor
-// 	pdf.Ln(10)
-// 	pdf.SetFont("Arial", "B", 12)
-// 	pdf.CellFormat(190, 10, "Valor", "0", 1, "L", false, 0, "")
-// 	pdf.SetFont("Arial", "", 12)
-// 	pdf.CellFormat(190, 10, value, "0", 1, "L", false, 0, "")
+	barcodeBase64, err := imageToBase64(img)
+	if err != nil {
+		log.Fatal("Erro ao converter a imagem para base64:", err)
+	}
 
-// 	// Adicionar agência e conta
-// 	pdf.Ln(10)
-// 	pdf.SetFont("Arial", "B", 12)
-// 	pdf.CellFormat(190, 10, "Agência / Código do Cedente", "0", 1, "L", false, 0, "")
-// 	pdf.SetFont("Arial", "", 12)
-// 	pdf.CellFormat(190, 10, fmt.Sprintf("%s / %s", agency, account), "0", 1, "L", false, 0, "")
+	outFile, err := os.Create("img/codigo_de_barras.png")
+	if err != nil {
+		log.Fatal("Erro ao criar o arquivo PNG:", err)
+	}
+	defer outFile.Close()
 
-// 	// Adicionar data e número do documento
-// 	pdf.Ln(10)
-// 	pdf.SetFont("Arial", "B", 12)
-// 	pdf.CellFormat(190, 10, "Data do Documento / Nº do Documento", "0", 1, "L", false, 0, "")
-// 	pdf.SetFont("Arial", "", 12)
-// 	pdf.CellFormat(190, 10, fmt.Sprintf("%s / %s", documentDate, documentNumber), "0", 1, "L", false, 0, "")
+	err = png.Encode(outFile, img)
+	if err != nil {
+		log.Fatal("Erro ao salvar o código de barras como PNG:", err)
+	}
 
-// 	// Adicionar instruções
-// 	pdf.Ln(10)
-// 	pdf.SetFont("Arial", "B", 12)
-// 	pdf.CellFormat(190, 10, "Instruções", "0", 1, "L", false, 0, "")
-// 	pdf.SetFont("Arial", "", 12)
-// 	pdf.MultiCell(190, 10, instructions, "0", "L", false)
+	p := BoletoData{
+		Identificacao:    "Malga Ltda",
+		CPFCNPJ:          "12.345.678/0001-99",
+		Endereco:         "Rua Exemplo, 123",
+		CidadeUF:         "Cidade/UF",
+		DigitableLine:    "34191098346591006056833830580008999470000000100",
+		Value:            "R$ 100,00",
+		CodigoBancoComDv: "341-7",
+		Agencia:          "0000",
+		CodigoBarras:     barcodeBase64,
+	}
 
-// 	// Salvar PDF
-// 	fileName := "boleto.pdf"
-// 	err := pdf.OutputFileAndClose(fileName)
-// 	if err != nil {
-// 		log.Fatalf("Erro ao salvar PDF: %v", err)
-// 	}
+	htmlFile, err := os.Create("output.html")
+	if err != nil {
+		log.Fatal("Erro ao criar o arquivo HTML:", err)
+	}
+	defer htmlFile.Close()
 
-// 	fmt.Println("PDF gerado com sucesso!")
+	err = tmpl.ExecuteTemplate(htmlFile, "boleto.html", p)
+	if err != nil {
+		log.Fatal("Erro ao renderizar o template:", err)
+	}
 
-// 	// Abrir PDF automaticamente
-// }
+	log.Println("HTML gerado e salvo como output.html")
+}

@@ -6,6 +6,10 @@
     <meta name="Generator" content="Projeto BoletoPHP - www.boletophp.com.br - Licença GPL">
     <title>Boleto</title>
     <style>
+         .barcode {
+            width: 103mm;  
+            height: 13mm;  
+        }
         .cp {
             font: bold 10px Arial;
             color: black;
@@ -58,9 +62,9 @@
                         <li>Caso tenha problemas ao imprimir, copie a seqüencia numérica abaixo e pague no caixa
                             eletrônico ou no internet banking:<br><br>
                             <span class="ld2">
-                                &nbsp;&nbsp;&nbsp;&nbsp;Linha Digitável: &nbsp;34191.79001 01043.510047 91020.150008 5 97860026000<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;Linha Digitável: &nbsp;34191098346591006056833830580008999470000000100<br>
                                 &nbsp;&nbsp;&nbsp;&nbsp;Valor: &nbsp;&nbsp;R$
-                                R$ 260,00<br>
+                                R$ 100,00<br>
                             </span>
                 </DIV>
             </td>
@@ -110,7 +114,7 @@
             <td width=3 valign=bottom><img height=22 src=img/3.png width=2 border=0></td>
             <td class=ld align=right width=453 valign=bottom><span class=ld>
                     <span class="campotitulo">
-                        34191.79001 01043.510047 91020.150008 5 97860026000
+                        34191098346591006056833830580008999470000000100
                     </span></span></td>
         </tr>
         <tbody>
@@ -361,7 +365,7 @@
             <td width=3 valign=bottom><img height=22 src=img/3.png width=2 border=0></td>
             <td class=ld align=right width=453 valign=bottom><span class=ld>
                     <span class="campotitulo">
-                        34191.79001 01043.510047 91020.150008 5 97860026000
+                        34191098346591006056833830580008999470000000100
                     </span></span></td>
         </tr>
         <tbody>
@@ -899,7 +903,7 @@
         <TBODY>
             <tr>
                 <td vAlign=bottom align=left height=50>
-                    &lt;?php fbarcode($dadosboleto["codigo_barras"]); ?>
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbgAAAANEAAAAACuQfheAAAAk0lEQVR4nOzT/wrCIBQF4Ba9/ysbIQNpTg3s/PV9EC3u1eaP8yrlMXUcpdTP51f7XUef9fq8VjufR2O&#43;/7ftvc7Xq6/Mke5ZGdPbs7t6r7ayL//ouZ5jbw3js/p1f2fve3/X9t2fdlVjz3kLsIvAQZDAQZDAQZDAQZDAQZDAQZDAQZDAQZDAQZDAQZDAQdA7AAD//6Nl5htFYG3kAAAAAElFTkSuQmCC" class=barcode alt="Código de Barras">
                 </td>
             </tr>
         </tbody>

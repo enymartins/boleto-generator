@@ -6,6 +6,10 @@
     <meta name="Generator" content="Projeto BoletoPHP - www.boletophp.com.br - Licença GPL">
     <title>Boleto</title>
     <style>
+         .barcode {
+            width: 103mm;
+            height: 13mm; 
+        }
         .cp {
             font: bold 10px Arial;
             color: black;
@@ -899,7 +903,7 @@
         <TBODY>
             <tr>
                 <td vAlign=bottom align=left height=50>
-                    <?php fbarcode($dadosboleto["codigo_barras"]); ?>
+                    <img src="data:image/png;base64,{{.CodigoBarras}}" class=barcode alt="Código de Barras">
                 </td>
             </tr>
         </tbody>
